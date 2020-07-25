@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, Dimensions } from 'react-native';
 
-const MiniCard = () =>{
+
+const MiniCard = (props) =>{
     return(
         <View style={{flexDirection:'row', margin:10}}>
             <Image 
-                source={{url:'https://images.unsplash.com/photo-1542281286-9e0a16bb7366?ixlib=rb-1.2.1&w=1000&q=80'}}
+                source={{url:`https://i.ytimg.com/vi/${props.videoId}/hqdefault.jpg`}}
                 style={{
                     width:'40%',
                     height:200
@@ -20,8 +21,8 @@ const MiniCard = () =>{
                 }}
                 ellipsizeMode='tail'
                 numberOfLines={3}
-                >Search Video 1 kguyflukiydkglgfugkdil iuurikdkgku igykmd,luigldd</Text>
-                <Text style={{fontSize:12}}>Search video subtitle</Text>
+            >{props.title}</Text>
+                <Text style={{fontSize:12}}>{props.channel}</Text>
             </View>
         </View>
     )
