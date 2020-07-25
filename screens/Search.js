@@ -3,21 +3,30 @@ import { StyleSheet, Text, View, ScrollView, TextInput, FlatList, ActivityIndica
 import {Ionicons} from '@expo/vector-icons';
 import MiniCard from '../components/MiniCard';
 import Constant from 'expo-constants';
+import {useSelector, useDispatch} from 'react-redux';
+import {useTheme} from '@react-navigation/native';
 
 //https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=songs&type=video&key=AIzaSyAVuc1J5SVvGHXwyzemRUhzMEIrZ-n6WfE
 
 
-const SearchScreen = () =>{
+const SearchScreen = ({navigation}) =>{
+    const {colors} = useTheme();
+    const myColor = colors.iconColor
     const [value, setValue] = useState('')
-    const [miniCardData, setMiniCard] = useState([])
+    //const [miniCardData, setMiniCard] = useState([])
+    const dispatch = useDispatch()
+    const miniCardData = useSelector(state=>{
+        return state.cardData
+    })
     const [loading, setLoading] = useState(false)
     const fetchData = () =>{
         setLoading(true)
-        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=${value}&type=video&key=AIzaSyAVuc1J5SVvGHXwyzemRUhzMEIrZ-n6WfE`)
+        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=15&q=${value}&type=video&key=AIzaSyAnzz_CReRTbp50Z9CioOclQpNeTfBUKhw`)
         .then(res=>res.json())
         .then(data=>{
             setLoading(false)
-            setMiniCard(data.items)
+            dispatch({type:'add', payload:data.items})
+            //setMiniCard(data.items)
         })
     }
     return(
@@ -27,9 +36,13 @@ const SearchScreen = () =>{
                 flexDirection:'row',
                 justifyContent:'space-around',
                 elevation:5,
-                backgroundColor:'white'
+                backgroundColor:colors.headerColor
             }}>
-                <Ionicons name='md-arrow-back' size={32} />
+                <Ionicons
+                 style={{color:myColor}}
+                 name='md-arrow-back' size={32} 
+                 onPress={()=>navigation.goBack()}
+                />
                 <TextInput
                 style={{
                     width:'70%',
@@ -37,9 +50,9 @@ const SearchScreen = () =>{
                 }}
                     value={value}
                     onChangeText={(text)=>setValue(text)}
-
                 />
-                <Ionicons 
+                <Ionicons
+                style={{color:myColor}} 
                 name='md-send'
                 size={32}
                 onPress={()=>fetchData()}
@@ -62,4 +75,3 @@ const SearchScreen = () =>{
 }
 
 export default SearchScreen;
-
